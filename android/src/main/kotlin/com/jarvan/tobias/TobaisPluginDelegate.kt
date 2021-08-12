@@ -78,7 +78,9 @@ class TobaisPluginDelegate : CoroutineScope {
 
     private suspend fun doSignFreePaymentTask(signInfo: String) = withContext(Dispatchers.IO) {
         val authTask = OpenAuthTask(activity)
-        authTask.execute("", OpenAuthTask.BizType.Deduct, mapOf("sign_params" to signInfo), null, false)
+        val signInfoMap = mapOf("sign_params" to signInfo)
+        Log.d("ssssssssssss", signInfo)
+        authTask.execute("", OpenAuthTask.BizType.Deduct, signInfoMap, null, false)
     }
 
     private fun version(result: Result) {
