@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import com.alipay.sdk.app.AuthTask
 import com.alipay.sdk.app.EnvUtils
+import com.alipay.sdk.app.OpenAuthTask
 import com.alipay.sdk.app.PayTask
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel.Result
@@ -24,6 +25,7 @@ class TobaisPluginDelegate : CoroutineScope {
             "version" -> version(result)
             "pay" -> pay(call, result)
             "auth" -> auth(call, result)
+            "signFreePayment" -> signFreePayment(call)
             "isAliPayInstalled" -> isAliPayInstalled(result)
             else -> result.notImplemented()
         }
@@ -65,6 +67,17 @@ class TobaisPluginDelegate : CoroutineScope {
     private suspend fun doAuthTask(authInfo: String): Map<String, String> = withContext(Dispatchers.IO) {
         val alipay = AuthTask(activity)
         alipay.authV2(authInfo, true) ?: mapOf<String, String>()
+    }
+
+    private fun signFreePayment(call: MethodCall) {
+        launch {
+            doSignFreePaymentTask(call.arguments as Map<String, String>)
+        }
+    }
+
+    private suspend fun doSignFreePaymentTask(signInfo: Map<String, String>) = withContext(Dispatchers.IO) {
+        val authTask = OpenAuthTask(activity)
+        authTask.execute("", OpenAuthTask.BizType.Deduct, null, null, false)
     }
 
     private fun version(result: Result) {

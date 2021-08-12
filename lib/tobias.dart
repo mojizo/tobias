@@ -13,6 +13,10 @@ Future<Map> aliPayAuth(String auth) async {
   return await _channel.invokeMethod("auth", auth);
 }
 
+Future<Map> signFreePayment(Map<String, String> signInfo) async {
+  return await _channel.invokeMethod("signFreePayment", signInfo);
+}
+
 Future<String> aliPayVersion() async {
   return await _channel.invokeMethod("version");
 }
