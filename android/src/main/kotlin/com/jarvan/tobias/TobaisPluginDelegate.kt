@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import com.alipay.sdk.app.AuthTask
 import com.alipay.sdk.app.EnvUtils
 import com.alipay.sdk.app.OpenAuthTask
@@ -70,12 +71,14 @@ class TobaisPluginDelegate : CoroutineScope {
     }
 
     private fun signFreePayment(call: MethodCall) {
+        Log.d("lllllllllll", "111111");
         launch {
             doSignFreePaymentTask(call.arguments as Map<String, String>)
         }
     }
 
     private suspend fun doSignFreePaymentTask(signInfo: Map<String, String>) = withContext(Dispatchers.IO) {
+        Log.d("lllllllllll", "22222222");
         val authTask = OpenAuthTask(activity)
         authTask.execute("", OpenAuthTask.BizType.Deduct, null, null, false)
     }
