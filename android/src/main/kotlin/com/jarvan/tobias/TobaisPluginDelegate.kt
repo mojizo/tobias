@@ -71,16 +71,14 @@ class TobaisPluginDelegate : CoroutineScope {
     }
 
     private fun signFreePayment(call: MethodCall) {
-        Log.d("lllllllllll", "111111");
         launch {
-            doSignFreePaymentTask(call.arguments as Map<String, String>)
+            doSignFreePaymentTask(call.arguments as String)
         }
     }
 
-    private suspend fun doSignFreePaymentTask(signInfo: Map<String, String>) = withContext(Dispatchers.IO) {
-        Log.d("lllllllllll", "22222222");
+    private suspend fun doSignFreePaymentTask(signInfo: String) = withContext(Dispatchers.IO) {
         val authTask = OpenAuthTask(activity)
-        authTask.execute("", OpenAuthTask.BizType.Deduct, null, null, false)
+        authTask.execute("", OpenAuthTask.BizType.Deduct, mapOf("sign_params" to signInfo), null, false)
     }
 
     private fun version(result: Result) {
