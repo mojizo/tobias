@@ -45,6 +45,8 @@ __weak TobiasPlugin* __tobiasPlugin;
       [self getVersion:call result:result];
   } else if([@"auth" isEqualToString:call.method]){
       [self _auth:call result:result];
+  } else if([@"signFreePayment" isEqualToString:call.method]){
+      [self _signFreePayment:call];
   } else if([@"isAliPayInstalled" isEqualToString:call.method]){
       [self  _isAliPayInstalled:call result:result];
   }else{
@@ -154,6 +156,20 @@ __weak TobiasPlugin* __tobiasPlugin;
                                                [__self onAuthResultReceived:resultDic];
                                            }];
 }
+
+-  ( void ) _signFreePayment:(FlutterMethodCall*)call {
+      NSString * sign_params = @"" ;   //代扣签约参数
+      NSDictionary * params = @{kAFServiceOptionBizParams: @{
+                                        @"sign_params": sign_params
+                                       },
+                                 kAFServiceOptionCallbackScheme: @"apsdkdemo",
+                                 };
+     NSLog (@"开始签约0");
+     NSLog (@"开始签约:%@", response.params);
+     [AFServiceCenter callService: AFServiceDeduct withParams: params andCompletion: ^( AFServiceResponse * response) {
+             NSLog (@"签约结果:%@", response.result);
+        }];
+ }
 
 -(void) getVersion:(FlutterMethodCall*)call result:(FlutterResult)result{
 
