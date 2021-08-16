@@ -157,19 +157,16 @@ __weak TobiasPlugin* __tobiasPlugin;
                                            }];
 }
 
--  ( void ) _signFreePayment:(FlutterMethodCall*)call {
-      NSString * sign_params = @"" ;   //代扣签约参数
-      NSDictionary * params = @{kAFServiceOptionBizParams: @{
-                                        @"sign_params": sign_params
-                                       },
-                                 kAFServiceOptionCallbackScheme: @"apsdkdemo",
-                                 };
-     NSLog (@"开始签约0");
-     NSLog (@"开始签约:%@", response.params);
-     [AFServiceCenter callService: AFServiceDeduct withParams: params andCompletion: ^( AFServiceResponse * response) {
-             NSLog (@"签约结果:%@", response.result);
-        }];
- }
+-( void ) _signFreePayment:(FlutterMethodCall*)call {
+    NSDictionary * params = @{kAFServiceOptionBizParams: @{
+                                      @"sign_params": call.arguments[@"sign_params"]
+                                     },
+                               kAFServiceOptionCallbackScheme: call.arguments[@"url_scheme"],
+                               };
+   [AFServiceCenter callService: AFServiceDeduct withParams: params andCompletion: ^( AFServiceResponse * response) {
+           NSLog (@"签约结果:%@", response.result);
+      }];
+}
 
 -(void) getVersion:(FlutterMethodCall*)call result:(FlutterResult)result{
 

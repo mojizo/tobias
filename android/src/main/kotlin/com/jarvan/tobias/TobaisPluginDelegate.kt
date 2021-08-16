@@ -72,7 +72,7 @@ class TobaisPluginDelegate : CoroutineScope {
 
     private fun signFreePayment(call: MethodCall) {
         launch {
-            doSignFreePaymentTask(call.arguments as String)
+            doSignFreePaymentTask(call.argument("sign_params") ?: "")
         }
     }
 
